@@ -28,7 +28,7 @@ public class CRUDManager {
             switch (choice) {
                 case 0 -> printAllContacts();
                 case 1 -> System.out.println("Not implemented");
-                case 2 -> System.out.println("Not implemented");
+                case 2 -> createContact();
                 case 3 -> System.out.println("Not implemented");
                 case 4 -> System.out.println("Not implemented");
                 case 5 -> {
@@ -41,8 +41,23 @@ public class CRUDManager {
         }
     }
 
+    private void createContact() {
+        System.out.println("Enter name: ");
+        final String name = InputUtils.readString();
+        System.out.println("Enter email: ");
+        final String email = InputUtils.readString();
+        System.out.println("Enter phone: ");
+        final String phone = InputUtils.readString();
+
+        if (contactService.create(name, email, phone) > 0) {
+            System.out.println("Contact, created successfully");
+        } else {
+            System.out.println("Could not create contact");
+        }
+    }
+
     private void printAllContacts() {
-    final List<Contact> contacts = contactService.readAll();
-    contacts.forEach(System.out::println);
+        final List<Contact> contacts = contactService.readAll();
+        contacts.forEach(System.out::println);
     }
 }

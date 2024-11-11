@@ -13,6 +13,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class DBContactService {
     private final String READ_ALL = "SELECT * FROM contact";
+    private final String CREATE = "INSERT INTO contact(name, email, phone) Values (?, ?, ?)";
 
     private static final Logger logger = getLogger(DBContactService.class);
 
@@ -35,6 +36,23 @@ public class DBContactService {
         } catch (SQLException e) {
             logger.error("Error while reading all contacts!", e);
             return null;
+        }
+    }
+
+    public int create(String name, String email, String phone) {
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(CREATE);
+        ) {
+
+            statement.setString(1, name);
+            statement.setString(2, email);
+            statement.setString(3, phone);
+
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error while creating a new contact", e);
+            return 0;
         }
     }
 }
