@@ -1,4 +1,4 @@
-package sk.wio;
+package sk.wio.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
