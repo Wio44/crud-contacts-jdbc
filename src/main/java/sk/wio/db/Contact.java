@@ -33,7 +33,7 @@ public class Contact {
     public String toString() {
         return "Contact [" +
                 "id: " + id +
-                ", name: " + name  +
+                ", name: " + name +
                 ", email: " + email +
                 ", phone: " + phone + ']';
     }

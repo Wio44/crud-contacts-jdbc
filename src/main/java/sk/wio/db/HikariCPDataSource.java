@@ -33,5 +33,6 @@ public class HikariCPDataSource {
         return ds.getConnection();
     }
 
-    private HikariCPDataSource() {}
+    private HikariCPDataSource() {
+    }
 }
