@@ -4,13 +4,12 @@ import java.sql.*;
 
 public class Main {
     public static void main(String[] args) {
-        String connectionUrl = "jdbc:mysql://localhost:3306/contacts";
         String select = "SELECT * FROM contact";
 
-        try {
-            Connection connection = DriverManager.getConnection(connectionUrl, "root", "password");
-            PreparedStatement statement = connection.prepareStatement(select);
-            ResultSet resultSet = statement.executeQuery();
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(select);
+                ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
