@@ -11,6 +11,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class DBContactService {
     private final String READ_ALL = "SELECT * FROM contact";
     private final String CREATE = "INSERT INTO contact(name, email, phone) Values (?, ?, ?)";
+    private final String DELETE = "DELETE FROM contact WHERE id = ?";
 
     private static final Logger logger = getLogger(DBContactService.class);
 
@@ -52,6 +53,21 @@ public class DBContactService {
             return 0;
         } catch (SQLException e) {
             logger.error("Error while creating a new contact", e);
+            return 0;
+        }
+    }
+
+    public int delete(int id) {
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(DELETE);
+                ) {
+
+            statement.setInt(1, id);
+            // returns number of affected rows
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error while deleting contact!", e);
             return 0;
         }
     }
