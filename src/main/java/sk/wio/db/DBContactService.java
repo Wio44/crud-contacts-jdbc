@@ -9,9 +9,10 @@ import java.util.List;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class DBContactService {
-    private final String READ_ALL = "SELECT * FROM contact";
-    private final String CREATE = "INSERT INTO contact(name, email, phone) Values (?, ?, ?)";
-    private final String DELETE = "DELETE FROM contact WHERE id = ?";
+    private static final String READ_ALL = "SELECT * FROM contact";
+    private final static String CREATE = "INSERT INTO contact(name, email, phone) Values (?, ?, ?)";
+    private final static String DELETE = "DELETE FROM contact WHERE id = ?";
+    private final static String EDIT = "UPDATE contact SET name = ?, email = ?, phone = ? WHERE id = ?";
 
     private static final Logger logger = getLogger(DBContactService.class);
 
@@ -60,14 +61,33 @@ public class DBContactService {
     public int delete(int id) {
         try (
                 Connection connection = HikariCPDataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(DELETE);
-                ) {
+            PreparedStatement statement = connection.prepareStatement(DELETE)) {
 
             statement.setInt(1, id);
             // returns number of affected rows
             return statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error while deleting contact!", e);
+            return 0;
+        }
+    }
+
+    public int edit(Contact contact) {
+        try (
+                Connection connection = HikariCPDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(EDIT)) {
+
+            statement.setString(1, contact.getName());
+            statement.setString(2, contact.getEmail());
+            statement.setString(3, contact.getPhone());
+            statement.setInt(4, contact.getId());
+            // returns number of affected rows
+            return statement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println("Contact with this email or phone already exists");
+            return 0;
+        } catch (SQLException e) {
+            logger.error("Error while editing contact!", e);
             return 0;
         }
     }
