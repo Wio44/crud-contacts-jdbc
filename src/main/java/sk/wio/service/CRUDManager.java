@@ -31,7 +31,7 @@ public class CRUDManager {
                 case 1 -> editContact();
                 case 2 -> createContact();
                 case 3 -> deleteContact();
-                case 4 -> System.out.println("Not implemented");
+                case 4 -> searchContactByEmail();
                 case 5 -> {
                     System.out.println("Good bye!");
                     return;
@@ -40,6 +40,11 @@ public class CRUDManager {
             }
 
         }
+    }
+
+    private void printAllContacts() {
+        final List<Contact> contacts = contactService.readAll();
+        contacts.forEach(System.out::println);
     }
 
     private void createContact() {
@@ -81,7 +86,7 @@ public class CRUDManager {
         }
     }
 
-    public void editContact() {
+    private void editContact() {
         final List<Contact> contacts = contactService.readAll();
 
         int choice;
@@ -100,7 +105,7 @@ public class CRUDManager {
                 continue;
             }
 
-           final Optional<Contact> contactToEdit = editContactFromInput(contacts.get(choice - 1));
+            final Optional<Contact> contactToEdit = editContactFromInput(contacts.get(choice - 1));
             if (contactToEdit.isPresent()) {
                 if (contactService.edit(contactToEdit.get()) > 0) {
                     System.out.println("Contact updated successfully");
@@ -146,8 +151,16 @@ public class CRUDManager {
         }
     }
 
-    private void printAllContacts() {
-        final List<Contact> contacts = contactService.readAll();
+    private void searchContactByEmail() {
+        System.out.println("Enter email: ");
+        final String email = InputUtils.readString();
+        final List<Contact> contacts = contactService.searchByEmail(email);
+        if (contacts.isEmpty()) {
+            System.out.println("No contacts found");
+            return;
+        }
+
+        System.out.println("Found contacts");
         contacts.forEach(System.out::println);
     }
 }
