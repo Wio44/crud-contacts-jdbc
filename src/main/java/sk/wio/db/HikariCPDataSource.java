@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class HikariCPDataSource {
-    private static HikariConfig config = new HikariConfig();
+    private static final HikariConfig config = new HikariConfig();
     private static final HikariDataSource ds;
-    private static Logger logger = LoggerFactory.getLogger(HikariCPDataSource.class);
+    private static final Logger logger = LoggerFactory.getLogger(HikariCPDataSource.class);
 
     static {
         final Properties prop = new Properties();

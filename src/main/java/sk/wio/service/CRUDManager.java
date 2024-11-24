@@ -18,12 +18,14 @@ public class CRUDManager {
     public void printOptions() {
         System.out.println("Hello, welcome to contacts manager\n");
         while (true) {
+            InputUtils.printDivider();
             System.out.println("0. Get all contacts");
             System.out.println("1. Edit contact");
             System.out.println("2. Add contact");
             System.out.println("3. Delete contact");
             System.out.println("4. Search contact by email");
             System.out.println("5. Exit");
+            InputUtils.printDivider();
 
             final int choice = InputUtils.readInt();
             switch (choice) {

@@ -22,4 +22,8 @@ public class InputUtils {
             }
         }
     }
+
+    public static void printDivider() {
+        System.out.println("--------------------------");
+    }
 }
